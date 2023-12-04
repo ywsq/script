@@ -71,7 +71,7 @@ class MotDePasseFort(MotDePasse):
         return mot_de_passe
 
     def is_fort(self, mot_de_passe):
-        dico_mdp_nuls = {'password', 'usr', 'azerty', 'qwerty', 'guest'}
+        dico_mdp_nuls = {'password', 'usr', 'azerty', 'qwerty', 'guest', 'loulou', 'motdepasse'}
         # Variable de la somme utilisée pour savoir si les chiffres sont répétitifs
         somme_caracteres = 0
         # Conservation du dernier chiffre de la chaine
