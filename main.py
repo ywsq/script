@@ -2,50 +2,108 @@ import random
 
 
 class MotDePasse:
-    def __init__(self, longueur, majuscule, minuscule, chiffre, special):
-        self.longueur = longueur
+    def __init__(self, longueur_min=5, longueur_max=15, majuscule='oui', minuscule='oui', chiffre='oui', special='oui'):
+        self.longueur_min = longueur_min
+        self.longueur_max = longueur_max
         self.majuscule = majuscule
         self.minuscule = minuscule
         self.chiffre = chiffre
         self.special = special
+        self.caracteres_chiffre = "0123456789"
+        self.caracteres_speciaux = "&@!?$%"
+        self.caracteres_minuscules = "abcdefghijklmnopqrstuvwxyz"
+        self.caracteres_majuscules = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        self.caracteres_utilises = ""
+        self.mot_de_passe = ""
 
     def generer_mot_de_passe(self):
-        chiffre = "0123456789"
-        caracteres_speciaux = "&@!?$%"
-        caracteres_minuscules = "abcdefghijklmnopqrstuvwxyz"
-        caracteres_majuscules = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        caracteres_utilises = ""
-        mot_de_passe = ""
+        self.__init__(self.longueur_min, self.longueur_max, self.majuscule, self.minuscule, self.chiffre, self.special)
+        # Ajout des caractères utilisés
         if self.majuscule == "oui":
-            caracteres_utilises += caracteres_majuscules
+            self.caracteres_utilises += self.caracteres_majuscules
         if self.minuscule == "oui":
-            caracteres_utilises += caracteres_minuscules
+            self.caracteres_utilises += self.caracteres_minuscules
         if self.chiffre == "oui":
-            caracteres_utilises += chiffre
+            self.caracteres_utilises += self.caracteres_chiffre
         if self.special == "oui":
-            caracteres_utilises += caracteres_speciaux
-        for i in range(int(self.longueur)):
-            mot_de_passe += random.choice(caracteres_utilises)
+            self.caracteres_utilises += self.caracteres_speciaux
+        # Génération du mot de passe
+        for i in range(random.randint(self.longueur_min, self.longueur_max)):
+            self.mot_de_passe += random.choice(self.caracteres_utilises)
+        return self.mot_de_passe
+
+    def __str__(self):
+        affichage_mot_de_passe = self.generer_mot_de_passe()
+        return f"Mot de passe généré ({len(affichage_mot_de_passe)} caractères): {affichage_mot_de_passe}"
+
+
+class MotDePassePersonalise(MotDePasse):
+    def __init__(self, longueur_min, longueur_max, majuscule, minuscule, chiffre, special):
+        super().__init__(longueur_min, longueur_max, majuscule, minuscule, chiffre, special)
+
+    def definir_parametre(self):
+        self.longueur_min = int(input("Le nombre minimum de caractères qu'aura votre mot de passe:"))
+        self.longueur_max = int(input("Le nombre maximum de caractères qu'aura votre mot de passe:"))
+        self.majuscule = input("Est-ce que votre mot de passe aura une majuscule ? (oui ou non):").lower()
+        self.minuscule = input("Est-ce que votre mot de passe aura une minuscule ? (oui ou non):").lower()
+        self.chiffre = input("Est-ce que votre mot de passe aura un chiffre ? (oui ou non):").lower()
+        self.special = input("Est-ce que votre mot de passe aura un caractère spécial ? (oui ou non):").lower()
+
+    def generer_mot_de_passe(self):
+        return super().generer_mot_de_passe()
+
+    def __str__(self):
+        print("Veuillez compléter:")
+        self.definir_parametre()
+        affichage_mot_de_passe = self.generer_mot_de_passe()
+        return f"Mot de passe personnalisé généré ({len(affichage_mot_de_passe)} caractères): {affichage_mot_de_passe}"
+
+
+class MotDePasseFort(MotDePasse):
+
+    def __init__(self, longueur_min, longueur_max, majuscule, minuscule, chiffre, special):
+        super().__init__(longueur_min, longueur_max, majuscule, minuscule, chiffre, special)
+
+    def generer_mot_de_passe_fort(self):
+        mot_de_passe = super().generer_mot_de_passe()
+        while not self.is_fort(mot_de_passe):
+            mot_de_passe = super().generer_mot_de_passe()
         return mot_de_passe
 
-#       def __str__(self):
+    def is_fort(self, mot_de_passe):
+        dico_mdp_nuls = {'password', 'usr', 'azerty', 'qwerty', 'guest'}
+        # Variable de la somme utilisée pour savoir si les chiffres sont répétitifs
+        somme_caracteres = 0
+        # Conservation du dernier chiffre de la chaine
+        chiffre = ""
+        mdp_nul = False
+
+        # Vérification de la vulnérabilité du mot de passe
+        for mot in dico_mdp_nuls:
+            if mot in mot_de_passe:
+                mdp_nul = True
+                break
+
+        for caractere in mot_de_passe:
+            # Seulement accepter les nombres
+            if caractere.isnumeric():
+                somme_caracteres += int(caractere)
+                chiffre = caractere
+
+        # Vérification de la robustesse
+        is_valid = len(mot_de_passe) >= 15 and not mdp_nul and chiffre * len(mot_de_passe) != somme_caracteres
+
+        return is_valid
+
+    def __str__(self):
+        affichage_mot_de_passe = self.generer_mot_de_passe_fort()
+        return f"Mot de passe robuste généré ({len(affichage_mot_de_passe)} caractères): {affichage_mot_de_passe}"
 
 
 if __name__ == '__main__':
-    try:
-        print("veuillez compléter")
-        longueur_mot_de_passe = input("Le nombre de caractères qu'aura votre mot de passe:")
-        majuscule_mot_de_passe = input("Est ce que votre mot de passe aura une majuscule ? (oui ou non):").lower()
-        minuscule_mot_de_passe = input("Est ce que votre mot de passe aura une minuscule ? (oui ou non):").lower()
-        chiffre_mot_de_passe = input("Est ce que votre mot de passe aura un chiffre ? (oui ou non):").lower()
-        special_mot_de_passe = input("Est ce que votre mot de passe aura un caractère spécial ? (oui ou non):").lower()
-
-#       ajout de bool() car sinon la valeur est un string et non booléen
-
-        user_mot_de_passe = MotDePasse(longueur_mot_de_passe, majuscule_mot_de_passe, minuscule_mot_de_passe, chiffre_mot_de_passe, special_mot_de_passe)
-        mot_de_passe = user_mot_de_passe.generer_mot_de_passe()
-        print(f"longueur du mot de passe : {len(mot_de_passe)} caractères")
-        print(f"Mot de passe généré : {mot_de_passe}")
-
-    except:
-        print("Réessayez, il faut au moins un paramètre au mot de passe.")
+    mot_de_passe = MotDePasse()
+    mdp_personnalise = MotDePassePersonalise(8, 12, "", "", "", "")
+    mdp_fort = MotDePasseFort(15, 30, 'oui', 'oui', 'oui', 'oui')
+    print(mdp_personnalise)
+    print(mdp_fort)
+    print(mot_de_passe)
