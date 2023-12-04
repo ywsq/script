@@ -1,4 +1,5 @@
 import random
+import argparse
 
 
 class MotDePasse:
@@ -59,18 +60,18 @@ class MotDePassePersonalise(MotDePasse):
         return f"Mot de passe personnalisé généré ({len(affichage_mot_de_passe)} caractères): {affichage_mot_de_passe}"
 
 
-class MotDePasseFort(MotDePasse):
+class MotDePasseRobuste(MotDePasse):
 
     def __init__(self, longueur_min, longueur_max, majuscule, minuscule, chiffre, special):
         super().__init__(longueur_min, longueur_max, majuscule, minuscule, chiffre, special)
 
-    def generer_mot_de_passe_fort(self):
+    def generer_mot_de_passe_robuste(self):
         mot_de_passe = super().generer_mot_de_passe()
-        while not self.is_fort(mot_de_passe):
+        while not self.is_robuste(mot_de_passe):
             mot_de_passe = super().generer_mot_de_passe()
         return mot_de_passe
 
-    def is_fort(self, mot_de_passe):
+    def is_robuste(self, mot_de_passe):
         dico_mdp_nuls = {'password', 'usr', 'azerty', 'qwerty', 'guest', 'loulou', 'motdepasse'}
         # Variable de la somme utilisée pour savoir si les chiffres sont répétitifs
         somme_caracteres = 0
@@ -96,14 +97,32 @@ class MotDePasseFort(MotDePasse):
         return is_valid
 
     def __str__(self):
-        affichage_mot_de_passe = self.generer_mot_de_passe_fort()
+        affichage_mot_de_passe = self.generer_mot_de_passe_robuste()
         return f"Mot de passe robuste généré ({len(affichage_mot_de_passe)} caractères): {affichage_mot_de_passe}"
 
 
+def main():
+    parser = argparse.ArgumentParser(description="Générateur de mot de passe.")
+    parser.add_argument("--custom", action="store_true", help="Générer un mot de passe personnalisé.")
+    parser.add_argument("--robuste", action="store_true", help="Générer un mot de passe robuste.")
+    args = parser.parse_args()
+
+    if args.custom:
+        mdp_personnalise = MotDePassePersonalise(8, 12, "", "", "", "")
+        print(mdp_personnalise)
+    elif args.robuste:
+        mdp_robuste = MotDePasseRobuste(15, 30, 'oui', 'oui', 'oui', 'oui')
+        print(mdp_robuste)
+    else:
+        mot_de_passe = MotDePasse()
+        print(mot_de_passe)
+
+
 if __name__ == '__main__':
-    mot_de_passe = MotDePasse()
+    main()
+    """mot_de_passe = MotDePasse()
     mdp_personnalise = MotDePassePersonalise(8, 12, "", "", "", "")
-    mdp_fort = MotDePasseFort(15, 30, 'oui', 'oui', 'oui', 'oui')
+    mdp_fort = MotDePasseRobuste(15, 30, 'oui', 'oui', 'oui', 'oui')
     print(mdp_personnalise)
     print(mdp_fort)
-    print(mot_de_passe)
+    print(mot_de_passe)"""
