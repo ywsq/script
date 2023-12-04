@@ -18,6 +18,7 @@ class MotDePasse:
 
     def generer_mot_de_passe(self):
         self.__init__(self.longueur_min, self.longueur_max, self.majuscule, self.minuscule, self.chiffre, self.special)
+        # Ajout des caractères utilisés
         if self.majuscule == "oui":
             self.caracteres_utilises += self.caracteres_majuscules
         if self.minuscule == "oui":
@@ -26,6 +27,7 @@ class MotDePasse:
             self.caracteres_utilises += self.caracteres_chiffre
         if self.special == "oui":
             self.caracteres_utilises += self.caracteres_speciaux
+        # Génération du mot de passe
         for i in range(random.randint(self.longueur_min, self.longueur_max)):
             self.mot_de_passe += random.choice(self.caracteres_utilises)
         return self.mot_de_passe
@@ -70,9 +72,9 @@ class MotDePasseFort(MotDePasse):
 
     def is_fort(self, mot_de_passe):
         dico_mdp_nuls = {'password', 'usr', 'azerty', 'qwerty', 'guest'}
-        # Comparera la somme pour savoir si c'est une suite du même nombre
+        # Variable de la somme utilisée pour savoir si les chiffres sont répétitifs
         somme_caracteres = 0
-        # Conservera le dernier chiffre de la chaine de caractère
+        # Conservation du dernier chiffre de la chaine
         chiffre = ""
         mdp_nul = False
 
