@@ -1,5 +1,7 @@
 import random
 import argparse
+import tkinter
+from tkinter import messagebox
 
 
 class MotDePasse:
@@ -101,6 +103,73 @@ class MotDePasseRobuste(MotDePasse):
         return f"Mot de passe robuste généré ({len(affichage_mot_de_passe)} caractères): {affichage_mot_de_passe}"
 
 
+class InterfaceGraphique:
+    def __init__(self, fenetre=tkinter.Tk()):
+        self.fenetre = fenetre
+        self.fenetre.title("MotDePasse Generator")
+        self.fenetre.geometry("500x350")
+
+        self.champ_longueur_min = tkinter.Entry(self.fenetre, width=4)
+        self.champ_longueur_max = tkinter.Entry(self.fenetre, width=4)
+        self.champ_majuscule = tkinter.Entry(self.fenetre, width=7)
+        self.champ_minuscule = tkinter.Entry(self.fenetre, width=7)
+        self.champ_chiffre = tkinter.Entry(self.fenetre, width=7)
+        self.champ_special = tkinter.Entry(self.fenetre, width=7)
+
+        self.init()
+
+    def generer_mdp(self):
+        mot_de_passe = MotDePasse()
+        messagebox.showinfo("Mot de passe généré", f"Mot de passe généré : {mot_de_passe}")
+
+    def generer_mdp_robuste(self):
+        mot_de_passe = MotDePasseRobuste(15, 30, 'oui', 'oui', 'oui', 'oui')
+        messagebox.showinfo("Mot de passe généré", f"Mot de passe généré : {mot_de_passe}")
+
+    def generer_mdp_custom(self):
+        # Récupérer les valeurs des champs
+        longueur_min = int(self.champ_longueur_min.get())
+        longueur_max = int(self.champ_longueur_max.get())
+        majuscule = self.champ_majuscule.get()
+        minuscule = self.champ_minuscule.get()
+        chiffre = self.champ_chiffre.get()
+        special = self.champ_special.get()
+
+        # Génération du mot de passe avec les valeurs des champs
+        mot_de_passe = MotDePasse(longueur_min, longueur_max, majuscule, minuscule, chiffre, special)
+        messagebox.showinfo("Mot de passe généré", f"Mot de passe généré : {mot_de_passe}")
+
+    def init(self):
+        label_bouton = tkinter.Label(self.fenetre, text="Clique sur le type de mot de passe à générer")
+        bouton_normal = tkinter.Button(self.fenetre, text="Normal", width=20, command=self.generer_mdp)
+        bouton_robuste = tkinter.Button(self.fenetre, text="Robuste", width=20, command=self.generer_mdp_robuste)
+        bouton_custom = tkinter.Button(self.fenetre, text="Custom", width=20, command=self.generer_mdp_custom)
+
+        label_longueur_min = tkinter.Label(self.fenetre, text="Longueur minimale :")
+        label_longueur_max = tkinter.Label(self.fenetre, text="Longueur maximale :")
+        label_majuscule = tkinter.Label(self.fenetre, text="Majuscule (oui ou non) :")
+        label_minuscule = tkinter.Label(self.fenetre, text="Minuscule (oui ou non) :")
+        label_chiffre = tkinter.Label(self.fenetre, text="Chiffre (oui ou non) :")
+        label_special = tkinter.Label(self.fenetre, text="Caractère spécial (oui ou non) :")
+
+        label_bouton.pack()
+        bouton_normal.pack()
+        bouton_robuste.pack()
+        bouton_custom.pack()
+        label_longueur_min.pack()
+        self.champ_longueur_min.pack()
+        label_longueur_max.pack()
+        self.champ_longueur_max.pack()
+        label_majuscule.pack()
+        self.champ_majuscule.pack()
+        label_minuscule.pack()
+        self.champ_minuscule.pack()
+        label_chiffre.pack()
+        self.champ_chiffre.pack()
+        label_special.pack()
+        self.champ_special.pack()
+
+
 def main():
     parser = argparse.ArgumentParser(description="Générateur de mot de passe.")
     parser.add_argument("--custom", action="store_true", help="Générer un mot de passe personnalisé.")
@@ -119,6 +188,8 @@ def main():
 
 
 if __name__ == '__main__':
+    interface = InterfaceGraphique()
+    interface.fenetre.mainloop()
     main()
     """mot_de_passe = MotDePasse()
     mdp_personnalise = MotDePassePersonalise(8, 12, "", "", "", "")
