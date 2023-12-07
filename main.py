@@ -44,11 +44,8 @@ class MotDePasse:
         return self.mot_de_passe
 
     def __str__(self):
-        try:
             affichage_mot_de_passe = self.generer_mot_de_passe()
             return f"Mot de passe généré ({len(affichage_mot_de_passe)} caractères): {affichage_mot_de_passe}"
-        except:
-            print("Erreur")
 
 
 class MotDePassePersonalise(MotDePasse):
@@ -67,14 +64,12 @@ class MotDePassePersonalise(MotDePasse):
         return super().generer_mot_de_passe()
 
     def __str__(self):
-        try:
-            print("Veuillez compléter:")
-            self.definir_parametre()
-            affichage_mot_de_passe = self.generer_mot_de_passe()
-            return f"Mot de passe personnalisé généré \
-            ({len(affichage_mot_de_passe)} caractères): {affichage_mot_de_passe}"
-        except:
-            print(f"Oops! Une erreur s'est produite")
+
+        print("Veuillez compléter:")
+        self.definir_parametre()
+        affichage_mot_de_passe = self.generer_mot_de_passe()
+        return f"Mot de passe personnalisé généré \
+        ({len(affichage_mot_de_passe)} caractères): {affichage_mot_de_passe}"
 
 
 class MotDePasseRobuste(MotDePasse):
