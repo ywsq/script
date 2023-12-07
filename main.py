@@ -143,9 +143,6 @@ class InterfaceGraphique:
 
     def generer_mdp_custom(self):
         try:
-            """if len(self.champ_longueur_min.get()) == 0 or len(self.champ_longueur_max.get()) == 0:
-                messagebox.showinfo("Erreur", "Oops! Veuillez entrer la longueur du code...")
-                return"""
             # Récupérer les valeurs des champs
             longueur_min = int(self.champ_longueur_min.get())
             longueur_max = int(self.champ_longueur_max.get())
