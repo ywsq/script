@@ -153,8 +153,8 @@ class InterfaceGraphique:
                 messagebox.showinfo("info", "Les champs avec * sont obligatoires. Réessayez ...")
             else:
                 messagebox.showerror("Erreur", "La valeur entrée n'est pas valide, Réessayez ...")
-        except TypeError:
-            messagebox.showinfo("info", "Veuillez taper 'oui' dans au moins un champ de caractère. Réessayez ...")
+        except IndexError:
+            messagebox.showinfo("info", "Veuillez entrer 'oui' dans au moins un champ de caractère, Réessayez ...")
 
     def init(self):
         # Initialisation des boutons
