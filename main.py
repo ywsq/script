@@ -72,6 +72,32 @@ class MotDePassePersonalise(MotDePasse):
         ({len(affichage_mot_de_passe)} caractères): {affichage_mot_de_passe}"
 
 
+def is_robuste(mot_de_passe):
+    dico_mdp_nuls = {'password', 'usr', 'azerty', 'qwerty', 'guest', 'loulou', 'motdepasse'}
+    # Variable de la somme utilisée pour savoir si les chiffres sont répétitifs
+    somme_caracteres = 0
+    # Conservation du dernier chiffre de la chaine
+    chiffre = ""
+    mdp_nul = False
+
+    # Vérification de la vulnérabilité du mot de passe
+    for mot in dico_mdp_nuls:
+        if mot in mot_de_passe:
+            mdp_nul = True
+            break
+
+    for caractere in mot_de_passe:
+        # Seulement accepter les nombres
+        if caractere.isnumeric():
+            somme_caracteres += int(caractere)
+            chiffre = caractere
+
+    # Vérification de la robustesse
+    is_valid = len(mot_de_passe) >= 15 and not mdp_nul and chiffre * len(mot_de_passe) != somme_caracteres
+
+    return is_valid
+
+
 class MotDePasseRobuste(MotDePasse):
 
     def __init__(self, longueur_min, longueur_max, majuscule, minuscule, chiffre, special):
@@ -80,34 +106,9 @@ class MotDePasseRobuste(MotDePasse):
 
     def generer_mot_de_passe_robuste(self):
         mot_de_passe = super().generer_mot_de_passe()
-        while not self.is_robuste(mot_de_passe):
+        while not is_robuste(mot_de_passe):
             mot_de_passe = super().generer_mot_de_passe()
         return mot_de_passe
-
-    def is_robuste(self, mot_de_passe):
-        dico_mdp_nuls = {'password', 'usr', 'azerty', 'qwerty', 'guest', 'loulou', 'motdepasse'}
-        # Variable de la somme utilisée pour savoir si les chiffres sont répétitifs
-        somme_caracteres = 0
-        # Conservation du dernier chiffre de la chaine
-        chiffre = ""
-        mdp_nul = False
-
-        # Vérification de la vulnérabilité du mot de passe
-        for mot in dico_mdp_nuls:
-            if mot in mot_de_passe:
-                mdp_nul = True
-                break
-
-        for caractere in mot_de_passe:
-            # Seulement accepter les nombres
-            if caractere.isnumeric():
-                somme_caracteres += int(caractere)
-                chiffre = caractere
-
-        # Vérification de la robustesse
-        is_valid = len(mot_de_passe) >= 15 and not mdp_nul and chiffre * len(mot_de_passe) != somme_caracteres
-
-        return is_valid
 
     def __str__(self):
         affichage_mot_de_passe = self.generer_mot_de_passe_robuste()
