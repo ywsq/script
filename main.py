@@ -12,8 +12,8 @@ class MotDePasse:
         self.minuscule = minuscule
         self.chiffre = chiffre
         self.special = special
-        self._caracteres_chiffre = "0123456789"
-        self.caracteres_speciaux = "&@!?$%"
+        self.caracteres_chiffre = "0123456789"
+        self._caracteres_speciaux = "&@!?$%"
         self.caracteres_minuscules = "abcdefghijklmnopqrstuvwxyz"
         self.caracteres_majuscules = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         self.caracteres_utilises = ""
@@ -35,7 +35,7 @@ class MotDePasse:
         if self.minuscule == "oui":
             self.caracteres_utilises += self.caracteres_minuscules
         if self.chiffre == "oui":
-            self.caracteres_utilises += self._caracteres_chiffre
+            self.caracteres_utilises += self.caracteres_chiffre
         if self.special == "oui":
             self.caracteres_utilises += self.caracteres_speciaux
         # Génération du mot de passe
@@ -74,7 +74,7 @@ class MotDePasseRobuste(MotDePasse):
 
     def __init__(self, longueur_min, longueur_max, majuscule, minuscule, chiffre, special):
         super().__init__(longueur_min, longueur_max, majuscule, minuscule, chiffre, special)
-        self.caracteres_speciaux("&@!?$%£_#")
+        self.caracteres_speciaux = "&@!?$%£_#"
 
     def generer_mot_de_passe_robuste(self):
         mot_de_passe = super().generer_mot_de_passe()
