@@ -155,11 +155,11 @@ class InterfaceGraphique:
             messagebox.showinfo("Mot de passe généré", f"Mot de passe généré : {mot_de_passe}")
         except ValueError:
             if len(self.champ_longueur_min.get()) == 0 or len(self.champ_longueur_max.get()) == 0:
-                messagebox.showinfo("Erreur", "Les champs avec * sont obligatoires. Réessayez ...")
+                messagebox.showinfo("info", "Les champs avec * sont obligatoires. Réessayez ...")
             else:
                 messagebox.showerror("Erreur", "La valeur entrée n'est pas valide, Réessayez ...")
         except TypeError:
-            messagebox.showinfo("Erreur", "Veuillez taper 'oui' dans au moins un champ de caractère. Réessayez ...")
+            messagebox.showinfo("info", "Veuillez taper 'oui' dans au moins un champ de caractère. Réessayez ...")
 
     def init(self):
         # Initialisation des boutons
