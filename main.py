@@ -44,8 +44,8 @@ class MotDePasse:
         return self.mot_de_passe
 
     def __str__(self):
-            affichage_mot_de_passe = self.generer_mot_de_passe()
-            return f"Mot de passe généré ({len(affichage_mot_de_passe)} caractères): {affichage_mot_de_passe}"
+        affichage_mot_de_passe = self.generer_mot_de_passe()
+        return f"Mot de passe généré ({len(affichage_mot_de_passe)} caractères): {affichage_mot_de_passe}"
 
 
 class MotDePassePersonalise(MotDePasse):
