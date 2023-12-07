@@ -149,18 +149,19 @@ class InterfaceGraphique:
         messagebox.showinfo("Mot de passe généré", f"Mot de passe généré : {mot_de_passe}")
 
     def init(self):
+        # Initialisation des boutons
         label_bouton = tkinter.Label(self.fenetre, text="Clique sur le type de mot de passe à générer")
         bouton_normal = tkinter.Button(self.fenetre, text="Normal", width=20, command=self.generer_mdp)
         bouton_robuste = tkinter.Button(self.fenetre, text="Robuste", width=20, command=self.generer_mdp_robuste)
         bouton_custom = tkinter.Button(self.fenetre, text="Custom", width=20, command=self.generer_mdp_custom)
-
+        # Initialisation des labels
         label_longueur_min = tkinter.Label(self.fenetre, text="Longueur minimale :")
         label_longueur_max = tkinter.Label(self.fenetre, text="Longueur maximale :")
         label_majuscule = tkinter.Label(self.fenetre, text="Majuscule (oui ou non) :")
         label_minuscule = tkinter.Label(self.fenetre, text="Minuscule (oui ou non) :")
         label_chiffre = tkinter.Label(self.fenetre, text="Chiffre (oui ou non) :")
         label_special = tkinter.Label(self.fenetre, text="Caractère spécial (oui ou non) :")
-
+        # Insertion des boutons dans l'interface
         label_bouton.pack()
         bouton_normal.pack()
         bouton_robuste.pack()
@@ -197,6 +198,6 @@ def main():
 
 
 if __name__ == '__main__':
+    main()
     interface = InterfaceGraphique()
     interface.fenetre.mainloop()
-    main()
