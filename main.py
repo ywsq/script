@@ -44,11 +44,8 @@ class MotDePasse:
         return self.mot_de_passe
 
     def __str__(self):
-        try:
-            affichage_mot_de_passe = self.generer_mot_de_passe()
-            return f"Mot de passe généré ({len(affichage_mot_de_passe)} caractères): {affichage_mot_de_passe}"
-        except:
-            print("Erreur")
+        affichage_mot_de_passe = self.generer_mot_de_passe()
+        return f"Mot de passe généré ({len(affichage_mot_de_passe)} caractères): {affichage_mot_de_passe}"
 
 
 class MotDePassePersonalise(MotDePasse):
@@ -67,14 +64,12 @@ class MotDePassePersonalise(MotDePasse):
         return super().generer_mot_de_passe()
 
     def __str__(self):
-        try:
-            print("Veuillez compléter:")
-            self.definir_parametre()
-            affichage_mot_de_passe = self.generer_mot_de_passe()
-            return f"Mot de passe personnalisé généré \
-            ({len(affichage_mot_de_passe)} caractères): {affichage_mot_de_passe}"
-        except:
-            print(f"Oops! Une erreur s'est produite")
+
+        print("Veuillez compléter:")
+        self.definir_parametre()
+        affichage_mot_de_passe = self.generer_mot_de_passe()
+        return f"Mot de passe personnalisé généré \
+        ({len(affichage_mot_de_passe)} caractères): {affichage_mot_de_passe}"
 
 
 class MotDePasseRobuste(MotDePasse):
@@ -143,9 +138,6 @@ class InterfaceGraphique:
 
     def generer_mdp_custom(self):
         try:
-            """if len(self.champ_longueur_min.get()) == 0 or len(self.champ_longueur_max.get()) == 0:
-                messagebox.showinfo("Erreur", "Oops! Veuillez entrer la longueur du code...")
-                return"""
             # Récupérer les valeurs des champs
             longueur_min = int(self.champ_longueur_min.get())
             longueur_max = int(self.champ_longueur_max.get())
@@ -158,11 +150,11 @@ class InterfaceGraphique:
             messagebox.showinfo("Mot de passe généré", f"Mot de passe généré : {mot_de_passe}")
         except ValueError:
             if len(self.champ_longueur_min.get()) == 0 or len(self.champ_longueur_max.get()) == 0:
-                messagebox.showinfo("Erreur", "Les champs avec * sont obligatoires. Réessayez ...")
+                messagebox.showinfo("info", "Les champs avec * sont obligatoires. Réessayez ...")
             else:
                 messagebox.showerror("Erreur", "La valeur entrée n'est pas valide, Réessayez ...")
         except TypeError:
-            messagebox.showinfo("Erreur", "Veuillez taper 'oui' dans au moins un champ de caractère. Réessayez ...")
+            messagebox.showinfo("info", "Veuillez taper 'oui' dans au moins un champ de caractère. Réessayez ...")
 
     def init(self):
         # Initialisation des boutons
