@@ -44,8 +44,11 @@ class MotDePasse:
         return self.mot_de_passe
 
     def __str__(self):
-        affichage_mot_de_passe = self.generer_mot_de_passe()
-        return f"Mot de passe généré ({len(affichage_mot_de_passe)} caractères): {affichage_mot_de_passe}"
+        try:
+            affichage_mot_de_passe = self.generer_mot_de_passe()
+            return f"Mot de passe généré ({len(affichage_mot_de_passe)} caractères): {affichage_mot_de_passe}"
+        except:
+            print("Erreur")
 
 
 class MotDePassePersonalise(MotDePasse):
@@ -64,10 +67,14 @@ class MotDePassePersonalise(MotDePasse):
         return super().generer_mot_de_passe()
 
     def __str__(self):
-        print("Veuillez compléter:")
-        self.definir_parametre()
-        affichage_mot_de_passe = self.generer_mot_de_passe()
-        return f"Mot de passe personnalisé généré ({len(affichage_mot_de_passe)} caractères): {affichage_mot_de_passe}"
+        try:
+            print("Veuillez compléter:")
+            self.definir_parametre()
+            affichage_mot_de_passe = self.generer_mot_de_passe()
+            return f"Mot de passe personnalisé généré \
+            ({len(affichage_mot_de_passe)} caractères): {affichage_mot_de_passe}"
+        except:
+            print(f"Oops! Une erreur s'est produite")
 
 
 class MotDePasseRobuste(MotDePasse):
@@ -117,7 +124,6 @@ class InterfaceGraphique:
         self.fenetre = fenetre
         self.fenetre.title("MotDePasse Generator")
         self.fenetre.geometry("500x350")
-
         self.champ_longueur_min = tkinter.Entry(self.fenetre, width=4)
         self.champ_longueur_max = tkinter.Entry(self.fenetre, width=4)
         self.champ_majuscule = tkinter.Entry(self.fenetre, width=7)
@@ -136,17 +142,24 @@ class InterfaceGraphique:
         messagebox.showinfo("Mot de passe généré", f"Mot de passe généré : {mot_de_passe}")
 
     def generer_mdp_custom(self):
-        # Récupérer les valeurs des champs
-        longueur_min = int(self.champ_longueur_min.get())
-        longueur_max = int(self.champ_longueur_max.get())
-        majuscule = self.champ_majuscule.get()
-        minuscule = self.champ_minuscule.get()
-        chiffre = self.champ_chiffre.get()
-        special = self.champ_special.get()
+        try:
+            """if len(self.champ_longueur_min.get()) == 0 or len(self.champ_longueur_max.get()) == 0:
+                messagebox.showinfo("Erreur", "Oops! Veuillez entrer la longueur du code...")
+                return"""
+            # Récupérer les valeurs des champs
+            longueur_min = int(self.champ_longueur_min.get())
+            longueur_max = int(self.champ_longueur_max.get())
+            majuscule = self.champ_majuscule.get()
+            minuscule = self.champ_minuscule.get()
+            chiffre = self.champ_chiffre.get()
+            special = self.champ_special.get()
 
-        # Génération du mot de passe avec les valeurs des champs
-        mot_de_passe = MotDePasse(longueur_min, longueur_max, majuscule, minuscule, chiffre, special)
-        messagebox.showinfo("Mot de passe généré", f"Mot de passe généré : {mot_de_passe}")
+            mot_de_passe = MotDePasse(longueur_min, longueur_max, majuscule, minuscule, chiffre, special)
+            messagebox.showinfo("Mot de passe généré", f"Mot de passe généré : {mot_de_passe}")
+        except TypeError:
+            messagebox.showinfo("Erreur", "Veuillez taper 'oui' dans au moins un champ de caractère. Réessayez ...")
+        except ValueError:
+            messagebox.showerror("Erreur", "La valeur entrée n'est pas valide, Réessayez ...")
 
     def init(self):
         # Initialisation des boutons
@@ -155,8 +168,8 @@ class InterfaceGraphique:
         bouton_robuste = tkinter.Button(self.fenetre, text="Robuste", width=20, command=self.generer_mdp_robuste)
         bouton_custom = tkinter.Button(self.fenetre, text="Custom", width=20, command=self.generer_mdp_custom)
         # Initialisation des labels
-        label_longueur_min = tkinter.Label(self.fenetre, text="Longueur minimale :")
-        label_longueur_max = tkinter.Label(self.fenetre, text="Longueur maximale :")
+        label_longueur_min = tkinter.Label(self.fenetre, text="* Longueur minimale :")
+        label_longueur_max = tkinter.Label(self.fenetre, text="* Longueur maximale :")
         label_majuscule = tkinter.Label(self.fenetre, text="Majuscule (oui ou non) :")
         label_minuscule = tkinter.Label(self.fenetre, text="Minuscule (oui ou non) :")
         label_chiffre = tkinter.Label(self.fenetre, text="Chiffre (oui ou non) :")
