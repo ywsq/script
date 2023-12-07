@@ -12,12 +12,20 @@ class MotDePasse:
         self.minuscule = minuscule
         self.chiffre = chiffre
         self.special = special
-        self.caracteres_chiffre = "0123456789"
+        self._caracteres_chiffre = "0123456789"
         self.caracteres_speciaux = "&@!?$%"
         self.caracteres_minuscules = "abcdefghijklmnopqrstuvwxyz"
         self.caracteres_majuscules = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         self.caracteres_utilises = ""
         self.mot_de_passe = ""
+
+    @property
+    def caracteres_speciaux(self):
+        return self._caracteres_speciaux
+
+    @caracteres_speciaux.setter
+    def caracteres_speciaux(self, caracteres_special):
+        self._caracteres_speciaux = caracteres_special
 
     def generer_mot_de_passe(self):
         self.__init__(self.longueur_min, self.longueur_max, self.majuscule, self.minuscule, self.chiffre, self.special)
@@ -27,7 +35,7 @@ class MotDePasse:
         if self.minuscule == "oui":
             self.caracteres_utilises += self.caracteres_minuscules
         if self.chiffre == "oui":
-            self.caracteres_utilises += self.caracteres_chiffre
+            self.caracteres_utilises += self._caracteres_chiffre
         if self.special == "oui":
             self.caracteres_utilises += self.caracteres_speciaux
         # Génération du mot de passe
@@ -66,6 +74,7 @@ class MotDePasseRobuste(MotDePasse):
 
     def __init__(self, longueur_min, longueur_max, majuscule, minuscule, chiffre, special):
         super().__init__(longueur_min, longueur_max, majuscule, minuscule, chiffre, special)
+        self.caracteres_speciaux("&@!?$%£_#")
 
     def generer_mot_de_passe_robuste(self):
         mot_de_passe = super().generer_mot_de_passe()
@@ -191,9 +200,3 @@ if __name__ == '__main__':
     interface = InterfaceGraphique()
     interface.fenetre.mainloop()
     main()
-    """mot_de_passe = MotDePasse()
-    mdp_personnalise = MotDePassePersonalise(8, 12, "", "", "", "")
-    mdp_fort = MotDePasseRobuste(15, 30, 'oui', 'oui', 'oui', 'oui')
-    print(mdp_personnalise)
-    print(mdp_fort)
-    print(mot_de_passe)"""
