@@ -2,6 +2,7 @@ import random
 import argparse
 import tkinter
 from tkinter import messagebox
+import unittest
 
 
 class MotDePasse:
@@ -30,13 +31,13 @@ class MotDePasse:
     def generer_mot_de_passe(self):
         self.__init__(self.longueur_min, self.longueur_max, self.majuscule, self.minuscule, self.chiffre, self.special)
         # Ajout des caractères utilisés
-        if self.majuscule == "oui":
+        if self.majuscule == "oui" or "oui" in self.majuscule:
             self.caracteres_utilises += self.caracteres_majuscules
-        if self.minuscule == "oui":
+        if self.minuscule == "oui" or "oui" in self.minuscule:
             self.caracteres_utilises += self.caracteres_minuscules
-        if self.chiffre == "oui":
+        if self.chiffre == "oui" or "oui" in self.chiffre:
             self.caracteres_utilises += self.caracteres_chiffre
-        if self.special == "oui":
+        if self.special == "oui" or "oui" in self.special:
             self.caracteres_utilises += self.caracteres_speciaux
         # Génération du mot de passe
         for i in range(random.randint(self.longueur_min, self.longueur_max)):
@@ -142,10 +143,10 @@ class InterfaceGraphique:
             # Récupérer les valeurs des champs
             longueur_min = int(self.champ_longueur_min.get())
             longueur_max = int(self.champ_longueur_max.get())
-            majuscule = self.champ_majuscule.get()
-            minuscule = self.champ_minuscule.get()
-            chiffre = self.champ_chiffre.get()
-            special = self.champ_special.get()
+            majuscule = self.champ_majuscule.get().lower()
+            minuscule = self.champ_minuscule.get().lower()
+            chiffre = self.champ_chiffre.get().lower()
+            special = self.champ_special.get().lower()
 
             mot_de_passe = MotDePasse(longueur_min, longueur_max, majuscule, minuscule, chiffre, special)
             messagebox.showinfo("Mot de passe généré", f"Mot de passe généré : {mot_de_passe}")
@@ -189,7 +190,29 @@ class InterfaceGraphique:
         self.champ_special.pack()
 
 
-def main():
+class TestMotDePasse(unittest.TestCase):
+    def setUp(self):    # méthode appelée avant chaque test
+        self.mot_de_passe = MotDePasse()
+
+    def test_generer_mot_de_passe(self):    # teste si la méthode generer_mot_de_passe fonctionne correctement
+        mot_de_passe_genere = self.mot_de_passe.generer_mot_de_passe()
+        self.assertTrue(self.mot_de_passe.longueur_min <= len(mot_de_passe_genere) <= self.mot_de_passe.longueur_max)
+
+
+class TestMotDePasseRobuste(unittest.TestCase):
+    def setUp(self):    # méthode appelée avant chaque test
+        self.mot_de_passe_robuste = MotDePasseRobuste(15, 30, 'oui', 'oui', 'oui', 'oui')
+
+    def test_fictif_is_robuste(self):   # teste si la méthode is_robuste fonctionne
+        mdp_fictif = "Aesfdesef5432#&f"
+        self.assertTrue(is_robuste(mdp_fictif))
+
+    def test_generer_mot_de_passe_robuste(self):    # teste si la méthode generer_mot_de_passe_robuste fonctionne
+        mot_de_passe_genere = self.mot_de_passe_robuste.generer_mot_de_passe_robuste()
+        self.assertTrue(is_robuste(mot_de_passe_genere))
+
+
+def cli():
     parser = argparse.ArgumentParser(description="Générateur de mot de passe.")
     parser.add_argument("--custom", action="store_true", help="Générer un mot de passe personnalisé.")
     parser.add_argument("--robuste", action="store_true", help="Générer un mot de passe robuste.")
@@ -207,6 +230,7 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    cli()
     interface = InterfaceGraphique()
     interface.fenetre.mainloop()
+    unittest.main()
