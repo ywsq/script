@@ -147,18 +147,24 @@ class InterfaceGraphique:
             minuscule = self.champ_minuscule.get().lower()
             chiffre = self.champ_chiffre.get().lower()
             special = self.champ_special.get().lower()
+            # Génère une erreur si la longueur est négative
             if int(self.champ_longueur_max.get()) < 0 or int(self.champ_longueur_min.get()) < 0:
                 raise ValueError("Valeur négative invalide")
+            # Génère une erreur si la longueur max est plus petite que la longueur min
             elif int(self.champ_longueur_max.get()) < int(self.champ_longueur_min.get()):
                 raise ValueError("Valeur max plus petite que valeur min")
+            # Génération du mot de passe sur base des valeurs des champs
             mot_de_passe = MotDePasse(longueur_min, longueur_max, majuscule, minuscule, chiffre, special)
             messagebox.showinfo("Mot de passe généré", f"Mot de passe généré : {mot_de_passe}")
         except ValueError:
+            # Si les champs de longueur n'ont pas été rempli, un message est affiché
             if len(self.champ_longueur_min.get()) == 0 or len(self.champ_longueur_max.get()) == 0:
                 messagebox.showinfo("info", "Les champs avec * sont obligatoires. Réessayez ...")
+            # Si la valeur n'est pas valide, un message d'erreur est affiché
             else:
                 messagebox.showerror("Erreur", "La valeur entrée n'est pas valide, Réessayez ...")
         except IndexError:
+            # Aucun caractère n'est choisi, la boucle ne peut pas itérer une chaine vide pour générer le mot de passe
             messagebox.showinfo("info", "Veuillez entrer 'oui' dans au moins un champ de caractère, Réessayez ...")
 
     def init(self):
