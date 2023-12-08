@@ -147,7 +147,10 @@ class InterfaceGraphique:
             minuscule = self.champ_minuscule.get().lower()
             chiffre = self.champ_chiffre.get().lower()
             special = self.champ_special.get().lower()
-
+            if int(self.champ_longueur_max.get()) < 0 or int(self.champ_longueur_min.get()) < 0:
+                raise ValueError("Valeur négative invalide")
+            elif int(self.champ_longueur_max.get()) < int(self.champ_longueur_min.get()):
+                raise ValueError("Valeur max plus petite que valeur min")
             mot_de_passe = MotDePasse(longueur_min, longueur_max, majuscule, minuscule, chiffre, special)
             messagebox.showinfo("Mot de passe généré", f"Mot de passe généré : {mot_de_passe}")
         except ValueError:
