@@ -9,8 +9,9 @@ class MotDePasse:
 
     def __init__(self, longueur_min=5, longueur_max=15, majuscule='oui', minuscule='oui', chiffre='oui', special='oui'):
         """
-        PRE: 'longueur_min' et 'longueur_max' doivent être des entiers positifs. 'majuscule', 'minuscule', 'chiffre',
+        PRE : 'longueur_min' et 'longueur_max' doivent être des entiers positifs. 'majuscule', 'minuscule', 'chiffre',
         'special' doivent être des chaines de caractères égales à "oui" ou "non".
+        POST : L'objet et les attributs sont initialisés avec les paramètres fournis.
         """
         self.longueur_min = longueur_min
         self.longueur_max = longueur_max
@@ -29,8 +30,8 @@ class MotDePasse:
     def caracteres_speciaux(self):
         """
         Getter pour les caractères spéciaux.
-
-        :return: Les caractères spéciaux autorisés dans le mot de passe.
+        PRE : /
+        POST : Retourne les caractères spéciaux autorisés dans le mot de passe.
         """
         return self._caracteres_speciaux
 
@@ -38,16 +39,16 @@ class MotDePasse:
     def caracteres_speciaux(self, caracteres_special):
         """
         Setter pour les caractères spéciaux.
-
-        :param caracteres_special: Les caractères spéciaux autorisés dans le mot de passe.
+        PRE : La valeur passée en paramètre doit être une chaîne de caractères.
+        POST : La propriété _caracteres_speciaux de l'objet est mise à jour avec la valeur passée en paramètre.
         """
         self._caracteres_speciaux = caracteres_special
 
     def generer_mot_de_passe(self):
         """
-        PRE: 'longueur_min', 'longueur_max', 'majuscule', 'minuscule', 'chiffre', 'special' doivent être correctement
+        PRE : 'longueur_min', 'longueur_max', 'majuscule', 'minuscule', 'chiffre', 'special' doivent être correctement
         initialisés.
-        POST: Le résultat retrouné ('mot_de_passe') est une chaine de caractères dont la longueur est comprise entre
+        POST : Le résultat retrouné ('mot_de_passe') est une chaine de caractères dont la longueur est comprise entre
         'longueur_min' et 'longueur_max'. Le mot de passe contient les caractères ayant été spécifiés ('majuscule',
         'minuscule', 'chiffre', 'special')
         """
@@ -68,9 +69,9 @@ class MotDePasse:
 
     def __str__(self):
         """
-        Représentation sous forme de chaîne de caractères de l'objet MotDePasse.
-
-        :return: Une chaîne de caractères représentant le mot de passe généré.
+        Représentation sous forme de chaîne de caractères.
+        PRE : /
+        POST: Retourne une chaîne de caractères représentant le mot de passe généré.
         """
         affichage_mot_de_passe = self.generer_mot_de_passe()
         return f"Mot de passe généré ({len(affichage_mot_de_passe)} caractères): {affichage_mot_de_passe}"
@@ -80,14 +81,19 @@ class MotDePassePersonalise(MotDePasse):
 
     def __init__(self, longueur_min, longueur_max, majuscule, minuscule, chiffre, special):
         """
-        PRE: 'longueur_min', 'longueur_max', 'majuscule', 'minuscule', 'chiffre', 'special' doivent être conformes
+        PRE : 'longueur_min', 'longueur_max', 'majuscule', 'minuscule', 'chiffre', 'special' doivent être conformes
         aux spécifications de la classe parente.
+        POST : Une instance de MotDePassePersonnalise est créée avec les paramètres spécifiés, les propriétés de la
+        classe MotDePasse sont initialisées.
         """
         super().__init__(longueur_min, longueur_max, majuscule, minuscule, chiffre, special)
 
     def definir_parametre(self):
         """
-        PRE: Les valeurs saisies par l'utilisateur doivent être conformes aux spécifications.
+        Permet à l'utilisateur de définir les paramètres pour la génération du mot de passe.
+        PRE : Les valeurs saisies par l'utilisateur doivent être conformes aux spécifications.
+        POST : Les propriétés 'longueur_min', 'longueur_max', 'majuscule', 'minuscule', 'chiffre', 'special' sont mises
+        à jour avec les valeurs saisies par l'utilisateur.
         """
         self.longueur_min = int(input("Le nombre minimum de caractères qu'aura votre mot de passe:"))
         self.longueur_max = int(input("Le nombre maximum de caractères qu'aura votre mot de passe:"))
@@ -98,16 +104,16 @@ class MotDePassePersonalise(MotDePasse):
 
     def generer_mot_de_passe(self):
         """
-        PRE: Les paramètres doivent être correctement définis à l'aide de la méthode 'definir_parametre'.
-        POST: Le résultat retourné est une chaîne de caractères représentant un mot de passe personnalisé.
+        PRE : Les paramètres doivent être correctement définis à l'aide de la méthode 'definir_parametre'.
+        POST : Le résultat retourné est une chaîne de caractères représentant un mot de passe personnalisé.
         """
         return super().generer_mot_de_passe()
 
     def __str__(self):
         """
-        Représentation sous forme de chaîne de caractères de l'objet MotDePassePersonalise.
-
-        :return: Une chaîne de caractères représentant le mot de passe personnalisé généré.
+        Représentation sous forme de chaîne de caractères.
+        PRE : /
+        POST : Retourne une chaîne de caractères représentant le mot de passe généré.
         """
         print("Veuillez compléter:")
         self.definir_parametre()
@@ -117,31 +123,29 @@ class MotDePassePersonalise(MotDePasse):
 
 def is_robuste(mot_de_passe):
     """
-    PRE: 'mot_de_passe' doit être une chaine de caractères.
-    POST: Le résultat retourné est un booléen indiquant si le mot de passe est robuste.
+    Vérification de la robustesse du mot de passe généré.
+    PRE : 'mot_de_passe' doit être une chaine de caractères.
+    POST : Le résultat retourné est un booléen indiquant si le mot de passe est robuste.
     """
     dico_mdp_nuls = {'password', 'usr', 'azerty', 'qwerty', 'guest', 'loulou', 'motdepasse'}
-    # Variable de la somme utilisée pour savoir si les chiffres sont répétitifs
-    somme_caracteres = 0
-    # Conservation du dernier chiffre de la chaine
-    chiffre = ""
+    # Variable qui va stocker la somme
+    somme_chiffres = 0
+    # Variable qui conservera le dernier chiffre de la chaine
+    dernier_chiffre = ""
+    # Variable qui sera True si elle contient un élément de dico_mdp_nuls
     mdp_nul = False
-
     # Vérification de la vulnérabilité du mot de passe
     for mot in dico_mdp_nuls:
         if mot in mot_de_passe:
             mdp_nul = True
             break
-
     for caractere in mot_de_passe:
-        # Seulement accepter les nombres
+        # Faire la somme des chiffres et récupérer le dernier chiffre de la chaine
         if caractere.isnumeric():
-            somme_caracteres += int(caractere)
-            chiffre = caractere
-
+            somme_chiffres += int(caractere)
+            dernier_chiffre = caractere
     # Vérification de la robustesse
-    is_valid = len(mot_de_passe) >= 15 and not mdp_nul and chiffre * len(mot_de_passe) != somme_caracteres
-
+    is_valid = len(mot_de_passe) >= 15 and not mdp_nul and dernier_chiffre * len(mot_de_passe) != somme_chiffres
     return is_valid
 
 
@@ -149,16 +153,19 @@ class MotDePasseRobuste(MotDePasse):
 
     def __init__(self, longueur_min, longueur_max, majuscule, minuscule, chiffre, special):
         """
-        PRE: longueur_min, longueur_max, majuscule, minuscule, chiffre, special doivent être conformes aux
+        PRE : longueur_min, longueur_max, majuscule, minuscule, chiffre, special doivent être conformes aux
         spécifications de la classe parente.
+        POST : Une instance de MotDePasseRobuste est créée avec les paramètres spécifiés, les propriétés de la classe
+        MotDePasse sont initialisées avec les valeurs fournies.
+        La propriété caracteres_speciaux est définie avec la valeur "&@!?$%£_#".
         """
         super().__init__(longueur_min, longueur_max, majuscule, minuscule, chiffre, special)
         self.caracteres_speciaux = "&@!?$%£_#"
 
     def generer_mot_de_passe_robuste(self):
         """
-        PRE: Les paramètres doivent être correctement définis à l'initialisation de la classe.
-        POST: Le résultat retourné est une chaine de caractères représentant un mot de passe robuste.
+        PRE : Les paramètres doivent être correctement définis à l'initialisation de la classe.
+        POST : Le résultat retourné est une chaine de caractères représentant un mot de passe robuste.
         """
         mot_de_passe = super().generer_mot_de_passe()
         while not is_robuste(mot_de_passe):
@@ -167,9 +174,9 @@ class MotDePasseRobuste(MotDePasse):
 
     def __str__(self):
         """
-        Représentation sous forme de chaîne de caractères de l'objet MotDePasseRobuste.
-
-        :return: Une chaîne de caractères représentant le mot de passe robuste généré.
+        Représentation sous forme de chaîne de caractères.
+        PRE : /
+        POST : Retourne une chaîne de caractères représentant le mot de passe robuste généré.
         """
         affichage_mot_de_passe = self.generer_mot_de_passe_robuste()
         return f"Mot de passe robuste généré ({len(affichage_mot_de_passe)} caractères): {affichage_mot_de_passe}"
@@ -177,6 +184,10 @@ class MotDePasseRobuste(MotDePasse):
 
 class InterfaceGraphique:
     def __init__(self, fenetre=tkinter.Tk()):
+        """
+        PRE : /
+        POST : Initialise l'interface graphique avec une fenêtre tkinter et les champs nécessaires.
+        """
         self.fenetre = fenetre
         self.fenetre.title("MotDePasse Generator")
         self.fenetre.geometry("500x350")
@@ -186,23 +197,36 @@ class InterfaceGraphique:
         self.champ_minuscule = tkinter.Entry(self.fenetre, width=7)
         self.champ_chiffre = tkinter.Entry(self.fenetre, width=7)
         self.champ_special = tkinter.Entry(self.fenetre, width=7)
-
         self.init()
 
     def generer_mdp(self):
+        """
+        PRE : /
+        POST : Génère un mot de passe en utilisant la classe MotDePasse et affiche une fenêtre avec le mot de passe
+        généré.
+        """
         mot_de_passe = MotDePasse()
         messagebox.showinfo("Mot de passe généré", f"Mot de passe généré : {mot_de_passe}")
 
     def generer_mdp_robuste(self):
+        """
+        PRE : /
+        POST : Génère un mot de passe en utilisant la classe MotDePasseRobuste et affiche une fenêtre avec le mot de
+        passe généré.
+        """
         mot_de_passe = MotDePasseRobuste(15, 30, 'oui', 'oui', 'oui', 'oui')
         messagebox.showinfo("Mot de passe généré", f"Mot de passe généré : {mot_de_passe}")
 
     def generer_mdp_custom(self):
         """
-        PRE: Les champs de longueur doivent être remplis, les longueurs saisies doivent être positives, la longueur
+        PRE : Les champs de longueur doivent être remplis, les longueurs saisies doivent être positives, la longueur
         maximale doit être supérieure ou égale à la longueur minimale et au moins un type de caractères est choisi.
-        POST: Une fenêtre affiche le mot de passe généré, une information ou un message d'erreur en cas de saisie
+        POST : Une fenêtre affiche le mot de passe généré, une information ou un message d'erreur en cas de saisie
         invalide.
+        RAISE : - ValueError → les champs de longueurs ne peuvent pas être vides ou négatives. La longueur maximale doit
+                être supérieure à la longueur minimale.
+                - IndexError → Le mot de passe doit comporter au moins un type de caractères. Si aucun caractère n'est
+                choisi, la boucle ne peut pas itérer une chaine vide pour générer le mot de passe
         """
         try:
             # préconditions
@@ -226,7 +250,6 @@ class InterfaceGraphique:
         except ValueError as e:
             messagebox.showerror("Erreur", str(e))
         except IndexError:
-            # Aucun caractère n'est choisi, la boucle ne peut pas itérer une chaine vide pour générer le mot de passe
             messagebox.showinfo("info", "Veuillez entrer 'oui' dans au moins un champ de caractère, Réessayez ...")
 
     def init(self):
