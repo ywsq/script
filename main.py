@@ -2,7 +2,6 @@ import random
 import argparse
 import tkinter
 from tkinter import messagebox
-import unittest
 
 
 class MotDePasse:
