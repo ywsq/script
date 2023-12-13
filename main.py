@@ -185,6 +185,7 @@ class MotDePasseRobuste(MotDePasse):
 class InterfaceGraphique:
     def __init__(self, fenetre=tkinter.Tk()):
         """
+        Initialisation de l'interface graphique
         PRE : /
         POST : Initialise l'interface graphique avec une fenêtre tkinter et les champs nécessaires.
         """
