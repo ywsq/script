@@ -291,6 +291,23 @@ class InterfaceGraphique:
         self.champ_special.pack()
 
 
+def cli():
+    parser = argparse.ArgumentParser(description="Générateur de mot de passe.")
+    parser.add_argument("--custom", action="store_true", help="Générer un mot de passe personnalisé.")
+    parser.add_argument("--robuste", action="store_true", help="Générer un mot de passe robuste.")
+    args = parser.parse_args()
+
+    if args.custom:
+        mdp_personnalise = MotDePassePersonalise(8, 12, "", "", "", "")
+        print(mdp_personnalise)
+    elif args.robuste:
+        mdp_robuste = MotDePasseRobuste(15, 30, 'oui', 'oui', 'oui', 'oui')
+        print(mdp_robuste)
+    else:
+        mot_de_passe = MotDePasse()
+        print(mot_de_passe)
+
+
 class TestMotDePasse(unittest.TestCase):
 
     def setUp(self):    # méthode appelée avant chaque test
@@ -312,23 +329,6 @@ class TestMotDePasseRobuste(unittest.TestCase):
     def test_generer_mot_de_passe_robuste(self):    # teste si la méthode generer_mot_de_passe_robuste fonctionne
         mot_de_passe_genere = self.mot_de_passe_robuste.generer_mot_de_passe_robuste()
         self.assertTrue(is_robuste(mot_de_passe_genere))
-
-
-def cli():
-    parser = argparse.ArgumentParser(description="Générateur de mot de passe.")
-    parser.add_argument("--custom", action="store_true", help="Générer un mot de passe personnalisé.")
-    parser.add_argument("--robuste", action="store_true", help="Générer un mot de passe robuste.")
-    args = parser.parse_args()
-
-    if args.custom:
-        mdp_personnalise = MotDePassePersonalise(8, 12, "", "", "", "")
-        print(mdp_personnalise)
-    elif args.robuste:
-        mdp_robuste = MotDePasseRobuste(15, 30, 'oui', 'oui', 'oui', 'oui')
-        print(mdp_robuste)
-    else:
-        mot_de_passe = MotDePasse()
-        print(mot_de_passe)
 
 
 if __name__ == '__main__':
