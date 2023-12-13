@@ -60,9 +60,9 @@ class TestMotDePasseRobuste(TestCase):
         self.assertTrue(is_robuste(mot_de_passe_robuste), "Test de la robustesse du mot de passe")
 
 
-class TestMotDePassePersonnalise(TestCase):
+class TestMotDePassePersonalise(TestCase):
     def test_definir_parametre(self):
-        mot_de_passe_personnalise = MotDePassePersonnalise(8, 12, 'oui', 'oui', 'oui', 'oui')
+        mot_de_passe_personnalise = MotDePassePersonalise(8, 12, 'oui', 'oui', 'oui', 'oui')
 
         # Vérifie que les paramètres sont correctement définis
         mot_de_passe_personnalise.definir_parametre()
@@ -74,31 +74,32 @@ class TestMotDePassePersonnalise(TestCase):
         self.assertIn(mot_de_passe_personnalise.special, ['oui', 'non'], "Test de caractère spécial")
 
     def test_generer_mot_de_passe_personnalise(self):
-        mot_de_passe_personnalise = MotDePassePersonnalise(8, 12, 'oui', 'oui', 'oui', 'oui')
+        mot_de_passe_personnalise = MotDePassePersonalise(8, 12, 'oui', 'oui', 'oui', 'oui')
 
         # Vérifie que le mot de passe généré respecte les paramètres définis
-        generated_password = mot_de_passe_personnalise.generer_mot_de_passe()
-        self.assertGreaterEqual(len(generated_password), mot_de_passe_personnalise.longueur_min,
+        mot_de_passe_genere = mot_de_passe_personnalise.generer_mot_de_passe()
+        self.assertGreaterEqual(len(mot_de_passe_genere), mot_de_passe_personnalise.longueur_min,
                                 "Test de longueur minimale du mot de passe généré")
-        self.assertLessEqual(len(generated_password), mot_de_passe_personnalise.longueur_max,
+        self.assertLessEqual(len(mot_de_passe_genere), mot_de_passe_personnalise.longueur_max,
                              "Test de longueur maximale du mot de passe généré")
         if mot_de_passe_personnalise.majuscule == 'oui':
-            self.assertTrue(any(c.isupper() for c in generated_password),
+            self.assertTrue(any(c.isupper() for c in mot_de_passe_genere),
                             "Test de majuscule dans le mot de passe généré")
         if mot_de_passe_personnalise.minuscule == 'oui':
-            self.assertTrue(any(c.islower() for c in generated_password),
+            self.assertTrue(any(c.islower() for c in mot_de_passe_genere),
                             "Test de minuscule dans le mot de passe généré")
         if mot_de_passe_personnalise.chiffre == 'oui':
-            self.assertTrue(any(c.isdigit() for c in generated_password), "Test de chiffre dans le mot de passe généré")
+            self.assertTrue(any(c.isdigit() for c in mot_de_passe_genere),
+                            "Test de chiffre dans le mot de passe généré")
         if mot_de_passe_personnalise.special == 'oui':
-            special_chars = set("!@#$%^&*()_-+=<>?/\\")
-            self.assertTrue(any(c in special_chars for c in generated_password),
+            caractere_special = set("!@#$%^&*()_-+=<>?")
+            self.assertTrue(any(c in caractere_special for c in mot_de_passe_genere),
                             "Test de caractère spécial dans le mot de passe généré")
 
     def test_str_mot_de_passe_personnalise(self):
-        mot_de_passe_personnalise = MotDePassePersonnalise(8, 12, 'oui', 'oui', 'oui', 'oui')
-        password_string = str(mot_de_passe_personnalise)
+        mot_de_passe_personnalise = MotDePassePersonalise(8, 12, 'oui', 'oui', 'oui', 'oui')
+        chaine_mot_de_passe = str(mot_de_passe_personnalise)
 
         # Vérifie que la représentation sous forme de chaîne contient la longueur du mot de passe généré
-        self.assertIn(str(len(mot_de_passe_personnalise.generer_mot_de_passe())), password_string,
+        self.assertIn(str(len(mot_de_passe_personnalise.generer_mot_de_passe())), chaine_mot_de_passe,
                       "Test de la représentation sous forme de chaîne du mot de passe personnalisé")
