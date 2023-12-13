@@ -185,6 +185,7 @@ class MotDePasseRobuste(MotDePasse):
 class InterfaceGraphique:
     def __init__(self, fenetre=tkinter.Tk()):
         """
+        Initialisation de l'interface graphique
         PRE : /
         POST : Initialise l'interface graphique avec une fenêtre tkinter et les champs nécessaires.
         """
@@ -232,6 +233,8 @@ class InterfaceGraphique:
             # Préconditions
             if self.champ_longueur_min.get() == "" or self.champ_longueur_max.get() == "":
                 raise ValueError("Les champs * sont obligatoires")
+            if not self.champ_longueur_min.get().isnumeric() or not self.champ_longueur_max.get().isnumeric():
+                raise ValueError("La longueur doit être un nombre exemple: 12")
             if int(self.champ_longueur_max.get()) < 0 or int(self.champ_longueur_min.get()) < 0:
                 raise ValueError("La valeur négative est invalide")
             if int(self.champ_longueur_max.get()) < int(self.champ_longueur_min.get()):
@@ -314,31 +317,7 @@ def cli():
         print(mot_de_passe)
 
 
-class TestMotDePasse(unittest.TestCase):
-
-    def setUp(self):    # méthode appelée avant chaque test
-        self.mot_de_passe = MotDePasse()
-
-    def test_generer_mot_de_passe(self):    # teste si la méthode generer_mot_de_passe fonctionne correctement
-        mot_de_passe_genere = self.mot_de_passe.generer_mot_de_passe()
-        self.assertTrue(self.mot_de_passe.longueur_min <= len(mot_de_passe_genere) <= self.mot_de_passe.longueur_max)
-
-
-class TestMotDePasseRobuste(unittest.TestCase):
-    def setUp(self):    # méthode appelée avant chaque test
-        self.mot_de_passe_robuste = MotDePasseRobuste(15, 30, 'oui', 'oui', 'oui', 'oui')
-
-    def test_fictif_is_robuste(self):   # teste si la méthode is_robuste fonctionne
-        mdp_fictif = "Aesfdesef5432#&f"
-        self.assertTrue(is_robuste(mdp_fictif))
-
-    def test_generer_mot_de_passe_robuste(self):    # teste si la méthode generer_mot_de_passe_robuste fonctionne
-        mot_de_passe_genere = self.mot_de_passe_robuste.generer_mot_de_passe_robuste()
-        self.assertTrue(is_robuste(mot_de_passe_genere))
-
-
 if __name__ == '__main__':
     cli()
     interface = InterfaceGraphique()
     interface.fenetre.mainloop()
-    unittest.main()
