@@ -4,6 +4,25 @@ import tkinter
 from tkinter import messagebox
 
 
+def verification_caracteres(mot_de_passe, majuscule, minuscule, chiffre, special, caracteres_speciaux):
+    if len(mot_de_passe) < 4:
+        return False
+    else:
+        if majuscule == "oui":
+            if not any(c.isupper() for c in mot_de_passe):
+                return True
+        if minuscule == 'oui':
+            if not any(c.islower() for c in mot_de_passe):
+                return True
+        if chiffre == 'oui':
+            if not any(c.isnumeric() for c in mot_de_passe):
+                return True
+        if special == 'oui':
+            if not any(c in caracteres_speciaux for c in mot_de_passe):
+                return True
+        return False
+
+
 class MotDePasse:
 
     def __init__(self, longueur_min=5, longueur_max=15, majuscule='oui', minuscule='oui', chiffre='oui', special='oui'):
@@ -106,7 +125,13 @@ class MotDePassePersonalise(MotDePasse):
         PRE : Les paramètres doivent être correctement définis à l'aide de la méthode 'definir_parametre'.
         POST : Le résultat retourné est une chaîne de caractères représentant un mot de passe personnalisé.
         """
-        return super().generer_mot_de_passe()
+        print("Veuillez compléter:")
+        self.definir_parametre()
+        mot_de_passe = super().generer_mot_de_passe()
+        while verification_caracteres(mot_de_passe, self.majuscule, self.minuscule, self.chiffre,
+                                      self.special, self.caracteres_speciaux):
+            mot_de_passe = super().generer_mot_de_passe()
+        return mot_de_passe
 
     def __str__(self):
         """
@@ -114,13 +139,11 @@ class MotDePassePersonalise(MotDePasse):
         PRE : /
         POST : Retourne une chaîne de caractères représentant le mot de passe généré.
         """
-        print("Veuillez compléter:")
-        self.definir_parametre()
         affichage_mot_de_passe = self.generer_mot_de_passe()
         return f"Mot de passe personnalisé généré ({len(affichage_mot_de_passe)} caractères): {affichage_mot_de_passe}"
 
 
-def is_robuste(mot_de_passe):
+def is_robuste(mot_de_passe, caracteres_speciaux):
     """
     Vérification de la robustesse du mot de passe généré.
     PRE : 'mot_de_passe' doit être une chaine de caractères.
@@ -143,8 +166,9 @@ def is_robuste(mot_de_passe):
         if caractere.isnumeric():
             somme_chiffres += int(caractere)
             dernier_chiffre = caractere
+    caracteres_absents = verification_caracteres(mot_de_passe, "oui", "oui", "oui", "oui", caracteres_speciaux)
     # Vérification de la robustesse
-    is_valid = len(mot_de_passe) >= 15 and not mdp_nul and dernier_chiffre * len(mot_de_passe) != somme_chiffres
+    is_valid = not caracteres_absents and len(mot_de_passe) >= 15 and not mdp_nul and dernier_chiffre * len(mot_de_passe) != somme_chiffres
     return is_valid
 
 
@@ -167,7 +191,7 @@ class MotDePasseRobuste(MotDePasse):
         POST : Le résultat retourné est une chaine de caractères représentant un mot de passe robuste.
         """
         mot_de_passe = super().generer_mot_de_passe()
-        while not is_robuste(mot_de_passe):
+        while not is_robuste(mot_de_passe, self.caracteres_speciaux):
             mot_de_passe = super().generer_mot_de_passe()
         return mot_de_passe
 
@@ -246,7 +270,12 @@ class InterfaceGraphique:
             chiffre = self.champ_chiffre.get().lower()
             special = self.champ_special.get().lower()
             # Génération du mot de passe sur base des valeurs des champs
-            mot_de_passe = MotDePasse(longueur_min, longueur_max, majuscule, minuscule, chiffre, special)
+            mot_de_passe_instance = MotDePasse(longueur_min, longueur_max, majuscule, minuscule, chiffre, special)
+            mot_de_passe = mot_de_passe_instance.generer_mot_de_passe()
+
+            while verification_caracteres(mot_de_passe, majuscule, minuscule, chiffre, special,
+                                          mot_de_passe_instance.caracteres_speciaux):
+                mot_de_passe = mot_de_passe_instance.generer_mot_de_passe()
             messagebox.showinfo("Mot de passe généré", f"Mot de passe généré : {mot_de_passe}")
         # Exceptions
         except ValueError as e:
