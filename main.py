@@ -229,7 +229,7 @@ class InterfaceGraphique:
                 choisi, la boucle ne peut pas itérer une chaine vide pour générer le mot de passe
         """
         try:
-            # préconditions
+            # Préconditions
             if self.champ_longueur_min.get() == "" or self.champ_longueur_max.get() == "":
                 raise ValueError("Les champs * sont obligatoires")
             if int(self.champ_longueur_max.get()) < 0 or int(self.champ_longueur_min.get()) < 0:
@@ -292,11 +292,17 @@ class InterfaceGraphique:
 
 
 def cli():
+    """
+    Utilisation en ligne de commande.
+    PRE : /
+    POST : D'après les arguments passés en ligne de commande, génère un mot de passe en utilisant la classe appropriée,
+    puis l'affiche.
+    """
     parser = argparse.ArgumentParser(description="Générateur de mot de passe.")
     parser.add_argument("--custom", action="store_true", help="Générer un mot de passe personnalisé.")
     parser.add_argument("--robuste", action="store_true", help="Générer un mot de passe robuste.")
     args = parser.parse_args()
-
+    # Génération selon l'argument
     if args.custom:
         mdp_personnalise = MotDePassePersonalise(8, 12, "", "", "", "")
         print(mdp_personnalise)
