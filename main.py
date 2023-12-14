@@ -168,7 +168,7 @@ def is_robuste(mot_de_passe, caracteres_speciaux):
             liste_chiffre += caractere
     caracteres_absents = verification_caracteres(mot_de_passe, "oui", "oui", "oui", "oui", caracteres_speciaux)
     # Vérification de la robustesse
-    is_valid = not caracteres_absents and len(mot_de_passe) >= 15 and not mdp_nul and liste_chiffre[0] * \
+    is_valid = not caracteres_absents and len(mot_de_passe) >= 15 and not mdp_nul and int(liste_chiffre[0]) * \
         len(liste_chiffre) != somme_chiffres
     return is_valid
 
