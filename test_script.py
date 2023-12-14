@@ -175,8 +175,8 @@ class TestMotDePassePersonalise(TestCase):
         print("test conformité de la valeur des paramètres")
         mot_de_passe_personnalise.definir_parametre()
         self.assertFalse(pas_valide(mot_de_passe_personnalise.longueur_min, mot_de_passe_personnalise.longueur_max),
-                        "Test si la longueur est positive et si la longueur maximale est plus grande que la\
-                        longueur minimale")
+                         "Test si la longueur est positive et si la longueur maximale est plus grande que la\
+                         longueur minimale")
         self.assertIn(mot_de_passe_personnalise.majuscule, ['oui', 'non'], "Test de majuscule")
         self.assertIn(mot_de_passe_personnalise.minuscule, ['oui', 'non'], "Test de minuscule")
         self.assertIn(mot_de_passe_personnalise.chiffre, ['oui', 'non'], "Test de chiffre")
