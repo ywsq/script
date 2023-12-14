@@ -95,6 +95,12 @@ class MotDePasse:
         return f"Mot de passe généré ({len(affichage_mot_de_passe)} caractères): {affichage_mot_de_passe}"
 
 
+def pas_valide(longueur_min, longueur_max):
+    while longueur_min < 0 or longueur_max < longueur_min:
+        print("La longueur entrée n'est pas valide, Réessayez ...")
+        return True
+
+
 class MotDePassePersonalise(MotDePasse):
 
     def __init__(self, longueur_min, longueur_max, majuscule, minuscule, chiffre, special):
@@ -127,6 +133,8 @@ class MotDePassePersonalise(MotDePasse):
         """
         print("Veuillez compléter:")
         self.definir_parametre()
+        while pas_valide(self.longueur_min, self.longueur_max):
+            self.definir_parametre()
         mot_de_passe = super().generer_mot_de_passe()
         while verification_caracteres(mot_de_passe, self.majuscule, self.minuscule, self.chiffre,
                                       self.special, self.caracteres_speciaux):

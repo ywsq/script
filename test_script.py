@@ -5,6 +5,7 @@ from main import MotDePasse
 from main import MotDePasseRobuste
 from main import is_robuste
 from main import verification_caracteres
+from main import pas_valide
 
 
 class TestFunctions(TestCase):
@@ -129,7 +130,7 @@ class TestMotDePasse(TestCase):
         self.assertEqual(mot_de_passe.longueur_min, 5, "test longueur_min par défaut")
         self.assertEqual(mot_de_passe.longueur_max, 15, "test longueur_max par défaut")
         self.assertEqual(mot_de_passe.majuscule, 'oui', "test majuscule par défaut")
-        
+
     def test_generer_mot_de_passe(self):
         mot_de_passe = MotDePasse()
         mdp_genere = mot_de_passe.generer_mot_de_passe()
@@ -173,9 +174,9 @@ class TestMotDePassePersonalise(TestCase):
         mot_de_passe_personnalise = MotDePassePersonalise(5, 30, 'oui', 'oui', 'oui', 'oui')
         print("test conformité de la valeur des paramètres")
         mot_de_passe_personnalise.definir_parametre()
-        self.assertTrue(mot_de_passe_personnalise.longueur_min > 0, "Test si la longueur est positive")
-        self.assertTrue(mot_de_passe_personnalise.longueur_max > mot_de_passe_personnalise.longueur_min,
-                        "Test si la longueur maximale est plus grande que longueur minimale")
+        self.assertFalse(pas_valide(mot_de_passe_personnalise.longueur_min, mot_de_passe_personnalise.longueur_max),
+                         "Test si la longueur est positive et si la longueur maximale est plus grande que la\
+                         longueur minimale")
         self.assertIn(mot_de_passe_personnalise.majuscule, ['oui', 'non'], "Test de majuscule")
         self.assertIn(mot_de_passe_personnalise.minuscule, ['oui', 'non'], "Test de minuscule")
         self.assertIn(mot_de_passe_personnalise.chiffre, ['oui', 'non'], "Test de chiffre")
