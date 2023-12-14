@@ -153,7 +153,7 @@ def is_robuste(mot_de_passe, caracteres_speciaux):
     # Variable qui va stocker la somme
     somme_chiffres = 0
     # Variable qui conservera le dernier chiffre de la chaine
-    dernier_chiffre = ""
+    liste_chiffre = ""
     # Variable qui sera True si elle contient un élément de dico_mdp_nuls
     mdp_nul = False
     # Vérification de la vulnérabilité du mot de passe
@@ -165,10 +165,11 @@ def is_robuste(mot_de_passe, caracteres_speciaux):
         # Faire la somme des chiffres et récupérer le dernier chiffre de la chaine
         if caractere.isnumeric():
             somme_chiffres += int(caractere)
-            dernier_chiffre = caractere
+            liste_chiffre += caractere
     caracteres_absents = verification_caracteres(mot_de_passe, "oui", "oui", "oui", "oui", caracteres_speciaux)
     # Vérification de la robustesse
-    is_valid = not caracteres_absents and len(mot_de_passe) >= 15 and not mdp_nul and dernier_chiffre * len(mot_de_passe) != somme_chiffres
+    is_valid = not caracteres_absents and len(mot_de_passe) >= 15 and not mdp_nul and liste_chiffre[0] * \
+        len(liste_chiffre) != somme_chiffres
     return is_valid
 
 
