@@ -232,7 +232,8 @@ class InterfaceGraphique:
         self.champ_special = tkinter.Entry(self.fenetre, width=7)
         self.init()
 
-    def generer_mdp(self):
+    @staticmethod
+    def generer_mdp():
         """
         PRE : /
         POST : Génère un mot de passe en utilisant la classe MotDePasse et affiche une fenêtre avec le mot de passe
@@ -241,7 +242,8 @@ class InterfaceGraphique:
         mot_de_passe = MotDePasse()
         messagebox.showinfo("Mot de passe généré", f"Mot de passe généré : {mot_de_passe}")
 
-    def generer_mdp_robuste(self):
+    @staticmethod
+    def generer_mdp_robuste():
         """
         PRE : /
         POST : Génère un mot de passe en utilisant la classe MotDePasseRobuste et affiche une fenêtre avec le mot de
@@ -265,12 +267,13 @@ class InterfaceGraphique:
             # Préconditions
             if self.champ_longueur_min.get() == "" or self.champ_longueur_max.get() == "":
                 raise ValueError("Les champs * sont obligatoires")
+            if int(self.champ_longueur_max.get()) < int(self.champ_longueur_min.get()):
+                raise ValueError("La longueur max. est plus petite que la longueur min.")
             if not self.champ_longueur_min.get().isnumeric() or not self.champ_longueur_max.get().isnumeric():
                 raise ValueError("La longueur doit être un nombre exemple: 12")
             if int(self.champ_longueur_max.get()) < 0 or int(self.champ_longueur_min.get()) < 0:
                 raise ValueError("La valeur négative est invalide")
-            if int(self.champ_longueur_max.get()) < int(self.champ_longueur_min.get()):
-                raise ValueError("La longueur max. est plus petite que la longueur min.")
+
             # Récupérer les valeurs des champs
             longueur_min = int(self.champ_longueur_min.get())
             longueur_max = int(self.champ_longueur_max.get())
