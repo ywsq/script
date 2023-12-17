@@ -214,6 +214,23 @@ class MotDePasseRobuste(MotDePasse):
         return f"Mot de passe robuste généré ({len(affichage_mot_de_passe)} caractères): {affichage_mot_de_passe}"
 
 
+class MotDePasseGenerique(MotDePasse):
+    def __init__(self, longueur_min, longueur_max, majuscule, minuscule, chiffre, special):
+        super().__init__(longueur_min, longueur_max, majuscule, minuscule, chiffre, special)
+
+    def generer_mot_de_passe_generique(self):
+        self.mot_de_passe += random.choice(self.caracteres_majuscules)
+        for i in range(int(self.longueur_max)-4):
+            self.mot_de_passe += random.choice(self.caracteres_minuscules)
+        for j in range(3):
+            self.mot_de_passe += random.choice(self.caracteres_chiffre)
+        return self.mot_de_passe
+
+    def __str__(self):
+        mot_de_passe = self.generer_mot_de_passe_generique()
+        return f"Mot de passe générique ({len(mot_de_passe)} caractères): {mot_de_passe}"
+
+
 class InterfaceGraphique:
     def __init__(self, fenetre=tkinter.Tk()):
         """
@@ -344,6 +361,7 @@ def cli():
     parser = argparse.ArgumentParser(description="Générateur de mot de passe.")
     parser.add_argument("--custom", action="store_true", help="Générer un mot de passe personnalisé.")
     parser.add_argument("--robuste", action="store_true", help="Générer un mot de passe robuste.")
+    parser.add_argument("--generique", action="store_true", help="Générer un mot de passe générique.")
     args = parser.parse_args()
     # Génération selon l'argument
     if args.custom:
@@ -352,6 +370,9 @@ def cli():
     elif args.robuste:
         mdp_robuste = MotDePasseRobuste(15, 30, 'oui', 'oui', 'oui', 'oui')
         print(mdp_robuste)
+    elif args.generique:
+        mdp_generique = MotDePasseGenerique(5, 5, "oui", "oui", "non", "non")
+        print(mdp_generique)
     else:
         mot_de_passe = MotDePasse()
         print(mot_de_passe)
